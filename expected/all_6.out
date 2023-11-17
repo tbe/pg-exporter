@@ -259,6 +259,7 @@ postgresql_exporter_collector_duration_seconds{collector="collect.pg_stat_replic
 postgresql_exporter_collector_duration_seconds{collector="collect.pg_stat_subscriptions_stats"}
 postgresql_exporter_collector_duration_seconds{collector="collect.pg_stat_user_tables.contrib_regression"}
 postgresql_exporter_collector_duration_seconds{collector="collect.pg_stat_wal"}
+postgresql_exporter_collector_duration_seconds{collector="collect.pg_statio"}
 postgresql_exporter_collector_duration_seconds{collector="collect.pg_statio_user_tables.contrib_regression"}
 postgresql_exporter_collector_duration_seconds{collector="collect.relfrozenxid.contrib_regression"}
 postgresql_exporter_collector_duration_seconds{collector="connection"}
@@ -271,6 +272,51 @@ postgresql_exporter_scrapes_total
 # HELP postgresql_info information about the PostgreSQL instance
 # TYPE postgresql_info gauge
 postgresql_info{server_version=""}
+# HELP postgresql_io_evictions_total Number of times a block has been written out from a shared or local buffer in order to make it available for another use
+# TYPE postgresql_io_evictions_total counter
+postgresql_io_evictions_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_extend_time_total Time spent in extend operations in milliseconds
+# TYPE postgresql_io_extend_time_total counter
+postgresql_io_extend_time_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_extends_total Number of relation extend operations, each of the size specified in op_bytes
+# TYPE postgresql_io_extends_total counter
+postgresql_io_extends_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_fsync_time_total Time spent in fsync operations calls in milliseconds
+# TYPE postgresql_io_fsync_time_total counter
+postgresql_io_fsync_time_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_fsyncs_total Number of fsync calls. These are only tracked in context normal
+# TYPE postgresql_io_fsyncs_total counter
+postgresql_io_fsyncs_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_hits_total The number of times a desired block was found in a shared buffer
+# TYPE postgresql_io_hits_total counter
+postgresql_io_hits_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_op_bytes The number of bytes per unit of I/O read, written, or extended
+# TYPE postgresql_io_op_bytes counter
+postgresql_io_op_bytes{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_read_time_total Time spent in read operations in milliseconds
+# TYPE postgresql_io_read_time_total counter
+postgresql_io_read_time_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_reads_total Number of read operations, each of the size specified in op_bytes
+# TYPE postgresql_io_reads_total counter
+postgresql_io_reads_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_reuses_total The number of times an existing buffer in a size-limited ring buffer outside of shared buffers was reused as part of an I/O operation in the bulkread, bulkwrite, or vacuum contexts
+# TYPE postgresql_io_reuses_total counter
+postgresql_io_reuses_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_stats_reset_seconds Time at which these statistics were last reset
+# TYPE postgresql_io_stats_reset_seconds counter
+postgresql_io_stats_reset_seconds{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_write_time_total Time spent in write operations in milliseconds
+# TYPE postgresql_io_write_time_total counter
+postgresql_io_write_time_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_writeback_time_total Time spent in writeback operations in milliseconds
+# TYPE postgresql_io_writeback_time_total counter
+postgresql_io_writeback_time_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_writebacks_total Number of units of size op_bytes which the process requested the kernel write out to permanent storage
+# TYPE postgresql_io_writebacks_total counter
+postgresql_io_writebacks_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
+# HELP postgresql_io_writes_total Number of write operations, each of the size specified in op_bytes
+# TYPE postgresql_io_writes_total counter
+postgresql_io_writes_total{backend_type="autovacuum launcher",context="bulkread",object="relation"}
 # HELP postgresql_locks_count Number of locks per state
 # TYPE postgresql_locks_count gauge
 postgresql_locks_count{granted="true",locktype="relation",mode="AccessShareLock",scope_type="shared object"}
