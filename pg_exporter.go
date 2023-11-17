@@ -57,6 +57,7 @@ var scrapers = map[collector.Scraper]bool{
 	collector.ScrapeWal{}:               true,
 	collector.ScrapeFrozenXid{}:         true,
 	collector.ScrapeStatements{}:        false,
+	collector.ScrapeSubscriptions{}:     true,
 }
 
 func init() {
