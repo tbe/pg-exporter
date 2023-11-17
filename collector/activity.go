@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/uptrace/bun"
-	"gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/1and1/pg-exporter/collector/models"
 )

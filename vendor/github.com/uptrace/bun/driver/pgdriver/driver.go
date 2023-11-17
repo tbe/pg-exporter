@@ -162,6 +162,7 @@ func (cn *Conn) write(ctx context.Context, wb *writeBuffer) error {
 
 	if err != nil {
 		if n == 0 {
+			Logger.Printf(ctx, "pgdriver: Conn.Write failed (zero-length): %s", err)
 			return driver.ErrBadConn
 		}
 		return err
@@ -327,6 +328,18 @@ func (cn *Conn) IsValid() bool {
 	return !cn.isClosed()
 }
 
+var _ driver.SessionResetter = (*Conn)(nil)
+
+func (cn *Conn) ResetSession(ctx context.Context) error {
+	if cn.isClosed() {
+		return driver.ErrBadConn
+	}
+	if cn.cfg.ResetSessionFunc != nil {
+		return cn.cfg.ResetSessionFunc(ctx, cn)
+	}
+	return nil
+}
+
 func (cn *Conn) checkBadConn(err error) error {
 	if isBadConn(err, false) {
 		// Close and return driver.ErrBadConn next time the conn is used.
@@ -335,6 +348,8 @@ func (cn *Conn) checkBadConn(err error) error {
 	// Always return the original error.
 	return err
 }
+
+func (cn *Conn) Conn() net.Conn { return cn.netConn }
 
 //------------------------------------------------------------------------------
 
@@ -370,7 +385,9 @@ func (r *rows) Close() error {
 
 	for {
 		switch err := r.Next(nil); err {
-		case nil, io.EOF:
+		case nil:
+			// keep going
+		case io.EOF:
 			return nil
 		default: // unexpected error
 			_ = r.cn.Close()
@@ -458,7 +475,7 @@ func (r *rows) readDataRow(rd *reader, dest []driver.Value) error {
 		return err
 	}
 
-	if len(dest) != int(numCol) {
+	if dest != nil && len(dest) != int(numCol) {
 		return fmt.Errorf("pgdriver: query returned %d columns, but Scan dest has %d items",
 			numCol, len(dest))
 	}

@@ -3,8 +3,8 @@ package collector
 import (
 	"context"
 
+	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/uptrace/bun"
-	"gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/1and1/pg-exporter/collector/models"
 )
